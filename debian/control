@@ -1,0 +1,20 @@
+Source: libanyevent-datetime-cron-perl
+Section: perl
+Priority: optional
+Maintainer: Alexander Wirt <formorer@debian.org>
+Build-Depends: debhelper (>= 8),
+ perl
+Standards-Version: 3.9.3
+Homepage: http://search.cpan.org/dist/AnyEvent-DateTime-Cron/
+
+Package: libanyevent-datetime-cron-perl
+Architecture: all
+Depends: ${misc:Depends}, ${perl:Depends}
+Description: AnyEvent crontab with DateTime::Event::Cron
+ AnyEvent::DateTime::Cron is an AnyEvent based crontab, which supports all
+ crontab formats recognised by DateTime::Event::Cron.
+ .
+ It allows you to shut down a running instance gracefully, by waiting for any
+ running cron jobs to finish before exiting.
+ .
+ This description was automagically extracted from the module by dh-make-perl.

@@ -1,0 +1,5 @@
+libanyevent-datetime-cron-perl (0.2-1) unstable; urgency=low
+
+  * Initial Release.
+
+ -- Alexander Wirt <formorer@debian.org>  Fri, 30 Nov 2012 15:59:20 +0100
