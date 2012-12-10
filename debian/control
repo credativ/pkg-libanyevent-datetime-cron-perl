@@ -2,13 +2,21 @@ Source: libanyevent-datetime-cron-perl
 Section: perl
 Priority: optional
 Maintainer: Alexander Wirt <alexander.wirt@credativ.de>
-Build-Depends: debhelper (>= 8), perl
+Build-Depends: debhelper (>= 8),
+               libanyevent-perl,
+               libdatetime-event-cron-perl,
+               libdatetime-perl,
+               perl
 Standards-Version: 3.9.3
 Homepage: http://search.cpan.org/dist/AnyEvent-DateTime-Cron/
 
 Package: libanyevent-datetime-cron-perl
 Architecture: all
-Depends: ${misc:Depends}, ${perl:Depends}
+Depends: libanyevent-perl,
+         libdatetime-event-cron-perl,
+         libdatetime-perl,
+         ${misc:Depends},
+         ${perl:Depends}
 Description: AnyEvent crontab with DateTime::Event::Cron
  AnyEvent::DateTime::Cron is an AnyEvent based crontab, which supports all
  crontab formats recognised by DateTime::Event::Cron.
