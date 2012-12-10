@@ -2,8 +2,7 @@ Source: libanyevent-datetime-cron-perl
 Section: perl
 Priority: optional
 Maintainer: Alexander Wirt <formorer@debian.org>
-Build-Depends: debhelper (>= 8),
- perl
+Build-Depends: debhelper (>= 8), perl
 Standards-Version: 3.9.3
 Homepage: http://search.cpan.org/dist/AnyEvent-DateTime-Cron/
 
