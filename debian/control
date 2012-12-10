@@ -16,5 +16,3 @@ Description: AnyEvent crontab with DateTime::Event::Cron
  .
  It allows you to shut down a running instance gracefully, by waiting for any
  running cron jobs to finish before exiting.
- .
- This description was automagically extracted from the module by dh-make-perl.
