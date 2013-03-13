@@ -6,6 +6,7 @@ Build-Depends: debhelper (>= 8),
                libanyevent-perl,
                libdatetime-event-cron-perl,
                libdatetime-perl,
+	       libmodule-build-perl (>= 0.39),
                perl
 Standards-Version: 3.9.3
 Homepage: http://search.cpan.org/dist/AnyEvent-DateTime-Cron/
