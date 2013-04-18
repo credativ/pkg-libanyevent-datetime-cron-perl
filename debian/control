@@ -5,6 +5,7 @@ Maintainer: Alexander Wirt <alexander.wirt@credativ.de>
 Build-Depends: debhelper (>= 8),
                libanyevent-perl,
                libdatetime-event-cron-perl,
+               libdatetime-event-cron-quartz-perl,
                libdatetime-perl,
                perl
 Standards-Version: 3.9.3
@@ -14,6 +15,7 @@ Package: libanyevent-datetime-cron-perl
 Architecture: all
 Depends: libanyevent-perl,
          libdatetime-event-cron-perl,
+         libdatetime-event-cron-quartz-perl,
          libdatetime-perl,
          ${misc:Depends},
          ${perl:Depends}
