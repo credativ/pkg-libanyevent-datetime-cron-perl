@@ -1,4 +1,4 @@
-libanyevent-datetime-cron-perl (0.06-1) unstable; urgency=low
+libanyevent-datetime-cron-perl (1:0.06-1) unstable; urgency=low
 
   * [bc46b29] Fix description
   * [68e23a1] Wrap-and-sort
