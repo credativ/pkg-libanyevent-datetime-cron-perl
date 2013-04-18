@@ -1,3 +1,13 @@
+libanyevent-datetime-cron-perl (0.06-1) UNRELEASED; urgency=low
+
+  * [bc46b29] Fix description
+  * [68e23a1] Wrap-and-sort
+  * [2f3cdc7] Adjust copyright
+  * [db777ea] Update deps
+  * [741b425] Imported Upstream version 0.06
+
+ -- Alexander Wirt <alexander.wirt@credativ.de>  Thu, 18 Apr 2013 11:07:16 +0200
+
 libanyevent-datetime-cron-perl (0.2-1) unstable; urgency=low
 
   * Initial Release.
