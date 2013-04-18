@@ -1,10 +1,11 @@
 {
    "abstract" : "AnyEvent crontab with DateTime::Event::Cron",
    "author" : [
-      "Clinton Gormley <drtech@cpan.org>"
+      "Clinton Gormley <drtech@cpan.org>",
+      "Andy Gorman <agorman@cpan.org>"
    ],
    "dynamic_config" : 0,
-   "generated_by" : "Dist::Zilla version 4.300000, CPAN::Meta::Converter version 2.110930",
+   "generated_by" : "Dist::Zilla version 4.300032, CPAN::Meta::Converter version 2.120921",
    "license" : [
       "perl_5"
    ],
@@ -24,18 +25,24 @@
             "Module::Build" : "0.3601"
          }
       },
+      "develop" : {
+         "requires" : {
+            "Test::Pod" : "1.41"
+         }
+      },
       "runtime" : {
          "requires" : {
-            "AnyEvent" : 0,
-            "DateTime" : 0,
-            "DateTime::Event::Cron" : 0,
-            "strict" : 0,
-            "warnings" : 0
+            "AnyEvent" : "0",
+            "DateTime" : "0",
+            "DateTime::Event::Cron" : "0",
+            "DateTime::Event::Cron::Quartz" : "0",
+            "strict" : "0",
+            "warnings" : "0"
          }
       },
       "test" : {
          "requires" : {
-            "Test::More" : 0
+            "Test::More" : "0"
          }
       }
    },
@@ -50,6 +57,6 @@
          "web" : "https://github.com/clintongormley/AnyEvent-DateTime-Cron"
       }
    },
-   "version" : "0.02"
+   "version" : "0.06"
 }
 

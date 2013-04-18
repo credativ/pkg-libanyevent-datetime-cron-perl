@@ -4,18 +4,31 @@ use warnings;
 use strict;
 use DateTime();
 use DateTime::Event::Cron();
+use DateTime::Event::Cron::Quartz();
 use AnyEvent();
-our $VERSION = 0.02;
+our $VERSION = 0.06;
 
 #===================================
 sub new {
 #===================================
-    my $class = shift;
+    my ( $class, %params ) = @_;
+
+    foreach my $key ( keys %params ) {
+    	die "Unknown param '$key'" unless $key =~ /^(time_zone|quartz)$/;
+    }
+
+    $params{time_zone} = DateTime::TimeZone->new(name => $params{time_zone})
+        if $params{time_zone};
+
+    $params{quartz} = 0 unless defined $params{quartz};
+
     return bless {
-        _jobs    => {},
-        _debug   => 0,
-        _id      => 0,
-        _running => 0,
+        _jobs      => {},
+        _debug     => 0,
+        _id        => 0,
+        _running   => 0,
+        _time_zone => $params{time_zone},
+        _quartz    => $params{quartz},
     }, $class;
 }
 
@@ -40,7 +53,14 @@ sub add {
         die "No callback found for cron entry '$cron'"
             unless $cb;
 
-        my $event = DateTime::Event::Cron->new($cron);
+        my $event;
+        if ($self->{_quartz}) {
+            $event = DateTime::Event::Cron::Quartz->new($cron);
+        }
+        else {
+            $event = DateTime::Event::Cron->new($cron);
+        }
+
         my $id    = ++$self->{_id};
         $params{name} ||= $id;
         my $job = $self->{_jobs}{$id} = {
@@ -117,14 +137,28 @@ sub _schedule {
 #===================================
     my $self = shift;
 
+    my $time_zone = $self->{_time_zone};
+
     AnyEvent->now_update();
     my $now_epoch = AnyEvent->now;
     my $now       = DateTime->from_epoch( epoch => $now_epoch );
     my $debug     = $self->{_debug};
 
+    $now->set_time_zone($time_zone) if $time_zone;
+
     for my $job (@_) {
         my $name       = $job->{name};
-        my $next_run   = $job->{event}->next($now);
+
+        my $next_run;
+        if ($self->{_quartz}) {
+            $next_run = $job->{event}->get_next_valid_time_after($now);
+        }
+        else {
+            $next_run = $job->{event}->next($now);
+        }
+
+        $next_run->set_time_zone($time_zone) if $time_zone;
+
         my $next_epoch = $next_run->epoch;
         my $delay      = $next_epoch - $now_epoch;
 
@@ -176,7 +210,6 @@ sub jobs { shift->{_jobs} }
 
 1;
 
-
 =pod
 
 =head1 NAME
@@ -185,7 +218,7 @@ AnyEvent::DateTime::Cron - AnyEvent crontab with DateTime::Event::Cron
 
 =head1 VERSION
 
-version 0.02
+version 0.06
 
 =head1 SYNOPSIS
 
@@ -208,6 +241,14 @@ version 0.02
     $cv = $cron->start;
     $cv->recv;
 
+    AnyEvent::DateTime::Cron->new(time_zone => 'local');
+        ->add(
+            '* * * * *'   => sub { warn "Every minute"},
+            '*/2 * * * *' => sub { warn "Every second minute"},
+          )
+        ->start
+        ->recv
+
 =head1 DESCRIPTION
 
 L<AnyEvent::DateTime::Cron> is an L<AnyEvent> based crontab, which supports
@@ -220,9 +261,21 @@ any running cron jobs to finish before exiting.
 
 =head2 new()
 
-    $cron = AnyEvent::DateTime::Cron->new();
+    $cron = AnyEvent::DateTime::Cron->new(
+        time_zone => ...
+        quartz    => 0/1
+    );
 
-Creates a new L<AnyEvent::DateTime::Cron> instance - takes no parameters.
+Creates a new L<AnyEvent::DateTime::Cron> instance - takes optional parameters
+time_zone and quartz.
+
+time_zone can will be used to set the time_zone for any DateTime objects that
+are used internally.
+
+if quartz is set to a true value then this class will use switch to using
+L<DateTime::Event::Cron::Quartz> internally, which will allow the use of seconds
+in the cron expression. See the DateTime::Event::Cron::Quartz for details on
+writing a proper quartz cron expression.
 
 =head2 add()
 
@@ -309,21 +362,28 @@ until your job has completed:
 Callbacks are called inside an C<eval> so if they throw an error, they
 will warn, but won't cause the cron loop to exit.
 
-1;
+=head1 AUTHORS
 
-=head1 AUTHOR
+=over 4
+
+=item *
 
 Clinton Gormley <drtech@cpan.org>
 
+=item *
+
+Andy Gorman <agorman@cpan.org>
+
+=back
+
 =head1 COPYRIGHT AND LICENSE
 
-This software is copyright (c) 2011 by Clinton Gormley.
+This software is copyright (c) 2013 by Clinton Gormley.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
 
 =cut
-
 
 __END__
 
